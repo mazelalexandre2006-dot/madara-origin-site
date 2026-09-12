@@ -239,12 +239,12 @@
 </header>
 
 <section class="dash-hero wrap">
-  <div class="eyebrow">Demo profile · sample data for illustration</div>
+  <div class="eyebrow" id="heroEyebrow">Demo profile · sample data for illustration</div>
   <h1>Your skin dashboard</h1>
-  <p class="lede">
+  <p class="lede" id="heroLede">
     A living profile for <b>Sample user — E. Kalniņa</b>, diagnosed on <span class="mono">10 Jan 2026</span>.
     This is what every Madara Origin customer sees after completing the diagnostic — updated automatically
-    each time the formula is reworked.
+    each time the formula is reworked. <a href="/#quiz" style="color:var(--steel-deep); text-decoration:underline;">Take the diagnostic</a> to see your own.
   </p>
 </section>
 
@@ -253,9 +253,9 @@
     <div class="section-head">
       <div class="eyebrow">Skin profile</div>
       <h2>Seven markers, one snapshot</h2>
-      <p>Combined from your quiz answers and your last saliva kit reading, taken 2 Jul 2026.</p>
+      <p id="profileSubtitle">Combined from your quiz answers and your last saliva kit reading, taken 2 Jul 2026.</p>
     </div>
-    <div class="diag-readout">
+    <div class="diag-readout" id="profileBars">
       <div class="row-metric">
         <span class="label">Hydration</span>
         <span class="bar"><span class="fill" style="width:64%"></span></span>
@@ -292,7 +292,7 @@
         <span class="val mono">60</span>
       </div>
     </div>
-    <div class="insight-box">
+    <div class="insight-box" id="profileInsight">
       <b>Lowest marker:</b> oxidative stress resistance sits at 49/100 — this is why your current formula
       leans on antioxidant-rich Sea buckthorn and Sphagnum moss.
     </div>
@@ -304,10 +304,10 @@
     <div>
       <div class="section-head" style="margin-bottom:24px;">
         <div class="eyebrow">Current formula</div>
-        <h2 style="font-size:clamp(1.5rem,2.4vw,1.9rem);">Origin Hydra — Formula #0842</h2>
-        <p>One of 1,240 possible combinations, blended 2 Jul 2026 in Riga.</p>
+        <h2 style="font-size:clamp(1.5rem,2.4vw,1.9rem);" id="formulaHeading">Origin Hydra — Formula #0842</h2>
+        <p id="formulaSubtitle">One of 1,240 possible combinations, blended 2 Jul 2026 in Riga.</p>
       </div>
-      <div class="diag-readout">
+      <div class="diag-readout" id="doseBars">
         <div class="row-metric">
           <span class="label">Sea buckthorn</span>
           <span class="bar"><span class="fill" style="width:34%"></span></span>
@@ -332,10 +332,10 @@
     </div>
     <div class="product-card">
       <div class="rec-label">Your active routine</div>
-      <h3>Origin Hydra</h3>
-      <div class="price mono">58 € · 60 ml · Serum-cream</div>
-      <div class="tagline">Deep hydration, rebuilt barrier.</div>
-      <p class="why">
+      <h3 id="productName">Origin Hydra</h3>
+      <div class="price mono" id="productPrice">58 € · 60 ml · Serum-cream</div>
+      <div class="tagline" id="productTagline">Deep hydration, rebuilt barrier.</div>
+      <p class="why" id="productWhy">
         Built for your hydration and barrier markers, with extra Sea buckthorn to support
         oxidative stress resistance — your lowest score this quarter.
       </p>
@@ -349,9 +349,9 @@
     <div class="section-head">
       <div class="eyebrow">Reformulation history</div>
       <h2>Your digital twin, over time</h2>
-      <p>Reworked four times a year as your markers shift with the seasons — nothing here is static.</p>
+      <p id="historySubtitle">Reworked four times a year as your markers shift with the seasons — nothing here is static.</p>
     </div>
-    <div class="history-list">
+    <div class="history-list" id="historyList">
       <div class="history-item">
         <div class="history-date">2 Jul 2026<br><span class="mono" style="font-size:0.68rem; color:var(--sage-deep);">CURRENT</span></div>
         <div>
@@ -384,7 +384,7 @@
   <div class="wrap">
     <div class="closing-band">
       <div>
-        <h2>Next reformulation: 1 Oct 2026</h2>
+        <h2 id="nextHeading">Next reformulation: 1 Oct 2026</h2>
         <p><span id="daysAway">19 days</span> away. Retake the diagnostic anytime if your skin or lifestyle
         has changed — your next formula will adjust automatically.</p>
       </div>
@@ -400,7 +400,7 @@
   <div class="wrap">
     <div class="foot-row">
       <div class="brand" style="font-size:1rem;">MADARA<span class="dot">·</span>ORIGIN</div>
-      <div class="foot-note">Sample dashboard built for a creative strategy exercise. All names, dates and figures shown here are fictional.</div>
+      <div class="foot-note" id="footNote">Sample dashboard built for a creative strategy exercise. All names, dates and figures shown here are fictional.</div>
     </div>
   </div>
 </footer>
@@ -408,11 +408,130 @@
 <script>
 (function(){
   'use strict';
-  var target = new Date('2026-10-01T00:00:00');
-  var el = document.getElementById('daysAway');
-  if(!el) return;
-  var days = Math.ceil((target - new Date()) / 86400000);
-  el.textContent = days > 1 ? days + ' days' : (days === 1 ? '1 day' : 'Today');
+
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fmtDate(d){ return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+  function clamp(v){ return Math.max(5, Math.min(98, Math.round(v))); }
+  function setDaysAway(target){
+    var el = document.getElementById('daysAway');
+    if(!el) return;
+    var days = Math.ceil((target - new Date()) / 86400000);
+    el.textContent = days > 1 ? days + ' days' : (days === 1 ? '1 day' : 'Today');
+  }
+
+  var PRODUCTS = {
+    hydra:   { name:'Origin Hydra',   price:'€58 · 60 ml', format:'Serum-cream',
+               tagline:'Deep moisture, rebuilt barrier.',
+               why:function(v){ return 'Your hydration score is '+v+'/100. Origin Hydra layers oat lipids with sea-buckthorn omega-7 to rebuild your barrier and lock in moisture.'; } },
+    shield:  { name:'Origin Shield',  price:'€62 · 60 ml', format:'Gel-balm',
+               tagline:'Calm, resilient, unbothered.',
+               why:function(v){ return 'Your tolerance score is '+v+'/100. Origin Shield leans on meadowsweet and sphagnum moss to calm reactivity and reduce flare-ups.'; } },
+    renew:   { name:'Origin Renew',   price:'€68 · 60 ml', format:'Concentrated serum',
+               tagline:'Firmer, more elastic skin.',
+               why:function(v){ return 'Your elasticity score is '+v+'/100. Origin Renew combines antioxidant-rich sea buckthorn with sphagnum extract to support long-term firmness.'; } },
+    clarity: { name:'Origin Clarity', price:'€64 · 60 ml', format:'Radiance essence',
+               tagline:'Even tone, quiet radiance.',
+               why:function(v){ return 'Your evenness score is '+v+'/100. Origin Clarity pairs vitamin-C-rich sea buckthorn with gentle meadowsweet to fade unevenness.'; } }
+  };
+
+  function pseudoId(seed){
+    var h = 0;
+    for(var i=0; i<seed.length; i++){ h = (h * 31 + seed.charCodeAt(i)) >>> 0; }
+    return (h % 1240) + 1;
+  }
+
+  function rowMetric(label, val, suffix){
+    return '<div class="row-metric"><span class="label">'+label+'</span>'+
+      '<span class="bar"><span class="fill" style="width:'+val+'%"></span></span>'+
+      '<span class="val mono">'+val+(suffix||'')+'</span></div>';
+  }
+
+  var raw = null;
+  try{ raw = JSON.parse(localStorage.getItem('madaraOriginResult')); }catch(e){ raw = null; }
+
+  var hasResult = !!(raw && raw.scores && typeof raw.scores.hydration === 'number' && PRODUCTS[raw.productKey]);
+
+  if(hasResult){
+    var s = raw.scores;
+    var savedAt = new Date(raw.savedAt || Date.now());
+    var product = PRODUCTS[raw.productKey];
+
+    var oxidative = clamp((s.elasticity + s.evenness) / 2 - 8);
+    var collagen = clamp(s.elasticity - 6);
+
+    var markers = [
+      {label:'Hydration', val: s.hydration},
+      {label:'Barrier integrity', val: s.barrier},
+      {label:'Elasticity', val: s.elasticity},
+      {label:'Tolerance', val: s.tolerance},
+      {label:'Evenness', val: s.evenness},
+      {label:'Oxidative stress resistance', val: oxidative},
+      {label:'Collagen resilience', val: collagen}
+    ];
+    var lowest = markers[0];
+    markers.forEach(function(m){ if(m.val < lowest.val) lowest = m; });
+
+    document.getElementById('profileBars').innerHTML = markers.map(function(m){ return rowMetric(m.label, m.val); }).join('');
+
+    // Dosage: weaker markers pull more weight toward the active that addresses them.
+    var needs = {
+      buckthorn:  (100 - s.hydration) + (100 - oxidative) * 0.5,
+      oat:        (100 - s.barrier),
+      sphagnum:   (100 - s.tolerance) + (100 - oxidative) * 0.5,
+      meadowsweet:(100 - s.evenness)
+    };
+    var total = needs.buckthorn + needs.oat + needs.sphagnum + needs.meadowsweet;
+    var pct = {};
+    Object.keys(needs).forEach(function(k){ pct[k] = Math.round(needs[k] / total * 100); });
+    var sumPct = pct.buckthorn + pct.oat + pct.sphagnum + pct.meadowsweet;
+    var biggest = Object.keys(pct).reduce(function(a,b){ return pct[a] >= pct[b] ? a : b; });
+    pct[biggest] += (100 - sumPct);
+
+    var doseNames = {buckthorn:'Sea buckthorn', oat:'Oat lipids', sphagnum:'Sphagnum moss', meadowsweet:'Meadowsweet'};
+    var doseOrder = Object.keys(pct).sort(function(a,b){ return pct[b] - pct[a]; });
+    document.getElementById('doseBars').innerHTML = doseOrder.map(function(k){
+      return rowMetric(doseNames[k], pct[k], '%');
+    }).join('');
+
+    var top2 = doseOrder.slice(0,2).map(function(k){ return doseNames[k]; }).join(' and ');
+    document.getElementById('profileInsight').innerHTML =
+      '<b>Lowest marker:</b> '+lowest.label.toLowerCase()+' sits at '+lowest.val+'/100 — this is why your current formula leans on '+top2+'.';
+
+    var formulaId = pseudoId(raw.productKey + '-' + savedAt.getTime());
+    document.getElementById('formulaHeading').textContent = product.name + ' — Formula #' + String(formulaId).padStart(4,'0');
+    document.getElementById('formulaSubtitle').textContent = 'One of 1,240 possible combinations, blended ' + fmtDate(savedAt) + ' in Riga.';
+
+    document.getElementById('productName').textContent = product.name;
+    document.getElementById('productPrice').textContent = product.price + ' · ' + product.format;
+    document.getElementById('productTagline').textContent = product.tagline;
+    document.getElementById('productWhy').textContent = product.why(s[raw.primary]);
+
+    document.getElementById('heroEyebrow').textContent = 'Your profile · saved ' + fmtDate(savedAt);
+    document.getElementById('heroLede').innerHTML = 'Based on the diagnostic you completed on <b>' + fmtDate(savedAt) + '</b>. ' +
+      'This is what shapes your current formula below — <a href="/#quiz" style="color:var(--steel-deep); text-decoration:underline;">retake it anytime</a> as your skin changes.';
+
+    document.getElementById('profileSubtitle').textContent = 'Combined from the quiz you answered on ' + fmtDate(savedAt) + '. Add the optional saliva kit for lab-measured markers instead of estimates.';
+
+    document.getElementById('historySubtitle').textContent = 'Reworked four times a year as your markers shift with the seasons. This list grows with every reformulation.';
+    document.getElementById('historyList').innerHTML =
+      '<div class="history-item">' +
+        '<div class="history-date">' + fmtDate(savedAt) + '<br><span class="mono" style="font-size:0.68rem; color:var(--sage-deep);">CURRENT</span></div>' +
+        '<div>' +
+          '<div class="history-tag">FORMULA #' + String(formulaId).padStart(4,'0') + '</div>' +
+          '<div class="history-formula">' + product.name + ' — v1</div>' +
+          '<div class="history-note">Your first formula, built from today’s diagnostic. It will evolve as you retake the quiz or add a saliva kit reading.</div>' +
+        '</div>' +
+      '</div>' +
+      '<p style="margin-top:20px; font-size:0.86rem; color:var(--text-muted);">Come back after your next quarterly reformulation to see this list grow.</p>';
+
+    var nextDate = new Date(savedAt.getTime() + 90 * 86400000);
+    document.getElementById('nextHeading').textContent = 'Next reformulation: ' + fmtDate(nextDate);
+    setDaysAway(nextDate);
+
+    document.getElementById('footNote').textContent = 'Generated live from the diagnostic you completed in this browser. Two markers (oxidative stress resistance, collagen resilience) are estimated pending a saliva kit reading.';
+  } else {
+    setDaysAway(new Date('2026-10-01T00:00:00'));
+  }
 })();
 </script>
 
