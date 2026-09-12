@@ -343,6 +343,7 @@
       <a href="#ingredients" data-i18n="nav_ingredients">Ingredients</a>
       <a href="#products" data-i18n="nav_products">Products</a>
       <a href="#proof" data-i18n="nav_proof">Proof</a>
+      <a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a>
     </nav>
     <div class="nav-right">
       <div class="lang-toggle" role="group" aria-label="Language">
@@ -494,7 +495,10 @@
           <a class="ing-link" href="#ingredients" data-i18n="view_ingredients_link">See matching ingredients ↓</a>
           <button type="button" class="btn btn-ghost product-details-btn" id="productDetailsBtn" data-i18n="products_cta">View details</button>
         </div>
-        <button type="button" class="btn btn-ghost retake" id="retakeBtn" data-i18n="btn_retake">Retake the quiz</button>
+        <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost retake" id="retakeBtn" data-i18n="btn_retake" style="margin-top:0;">Retake the quiz</button>
+          <a class="btn btn-ghost" href="/dashboard" data-i18n="btn_view_dashboard">View your dashboard →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -630,7 +634,7 @@
 
   var I18N = {
     en: {
-      nav_method:"Method", nav_quiz:"Quiz", nav_ingredients:"Ingredients", nav_proof:"Proof",
+      nav_method:"Method", nav_quiz:"Quiz", nav_ingredients:"Ingredients", nav_proof:"Proof", nav_dashboard:"Dashboard",
       cta_header:"Start your diagnostic",
       hero_eyebrow:"Personalized skincare — harvested in Latvia",
       hero_h1:"Your skin. Decoded by nature.",
@@ -648,7 +652,7 @@
       quiz_eyebrow:"Your diagnostic", quiz_h2:"Answer five questions, meet your formula",
       quiz_p:"This is a shortened version of the full skin quiz. Your answers stay on this page — nothing is sent anywhere.",
       quiz_progress:"Question {n} of {total}",
-      btn_back:"Back", btn_next:"Next", btn_seeresults:"See my results", btn_retake:"Retake the quiz",
+      btn_back:"Back", btn_next:"Next", btn_seeresults:"See my results", btn_retake:"Retake the quiz", btn_view_dashboard:"View your dashboard →",
       q1_text:"After cleansing, how does your skin usually feel?",
       q1_opt0:"Never tight", q1_opt1:"Occasionally, in winter", q1_opt2:"Often tight", q1_opt3:"Always tight",
       q2_text:"How does your skin react to new products?",
@@ -685,7 +689,7 @@
       footer_note:"Brand concept created for a creative strategy exercise (Elcoin.ai methodology). Your skin. Decoded by nature."
     },
     lv: {
-      nav_method:"Metode", nav_quiz:"Tests", nav_ingredients:"Sastāvdaļas", nav_proof:"Pierādījumi",
+      nav_method:"Metode", nav_quiz:"Tests", nav_ingredients:"Sastāvdaļas", nav_proof:"Pierādījumi", nav_dashboard:"Panelis",
       cta_header:"Sāc savu diagnostiku",
       hero_eyebrow:"Personalizēta kosmētika — novākta Latvijā",
       hero_h1:"Tava āda. Dabas atšifrēta.",
@@ -703,7 +707,7 @@
       quiz_eyebrow:"Tava diagnostika", quiz_h2:"Atbildi uz pieciem jautājumiem, iepazīsti savu formulu",
       quiz_p:"Šī ir saīsināta pilnā ādas testa versija. Tavas atbildes paliek šajā lapā — nekas netiek nosūtīts.",
       quiz_progress:"Jautājums {n} no {total}",
-      btn_back:"Atpakaļ", btn_next:"Tālāk", btn_seeresults:"Skatīt manu rezultātu", btn_retake:"Atkārtot testu",
+      btn_back:"Atpakaļ", btn_next:"Tālāk", btn_seeresults:"Skatīt manu rezultātu", btn_retake:"Atkārtot testu", btn_view_dashboard:"Skatīt savu paneli →",
       q1_text:"Kā tava āda parasti jūtas pēc attīrīšanas?",
       q1_opt0:"Nekad nestiepjas", q1_opt1:"Reizēm ziemā", q1_opt2:"Bieži stiepjas", q1_opt3:"Vienmēr stiepjas",
       q2_text:"Kā tava āda reaģē uz jauniem produktiem?",
