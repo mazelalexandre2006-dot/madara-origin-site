@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Skin Dashboard — Madara Origin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,470;9..144,560&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* ================= TOKENS (shared with main site) ================= */
+  :root{
+    --porcelain: #F6F3EA;
+    --surface: #FFFFFF;
+    --surface-sunken: #EEE9DC;
+    --peat: #1C2318;
+    --peat-soft: #384232;
+    --text: #1C2318;
+    --text-muted: #565F4C;
+    --sage: #6F7D5A;
+    --sage-deep: #4C5A3D;
+    --amber: #BE6E34;
+    --amber-deep: #9C5726;
+    --steel: #3E5C66;
+    --steel-deep: #2C4650;
+    --line: #D9D3C1;
+    --line-strong: #C4BCA4;
+    --focus: #3E5C66;
+    --shadow: 0 1px 2px rgba(28,35,24,0.04), 0 8px 24px rgba(28,35,24,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --porcelain: #12160E;
+      --surface: #1A2015;
+      --surface-sunken: #1F2618;
+      --peat: #F2EFE4;
+      --peat-soft: #C9CFBC;
+      --text: #F2EFE4;
+      --text-muted: #B4BBA3;
+      --sage: #9BAA83;
+      --sage-deep: #C3D0AC;
+      --amber: #E0955A;
+      --amber-deep: #F0AB78;
+      --steel: #7FA3AE;
+      --steel-deep: #9DC0CA;
+      --line: #313A28;
+      --line-strong: #454F38;
+      --focus: #7FA3AE;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --porcelain: #12160E;
+    --surface: #1A2015;
+    --surface-sunken: #1F2618;
+    --peat: #F2EFE4;
+    --peat-soft: #C9CFBC;
+    --text: #F2EFE4;
+    --text-muted: #B4BBA3;
+    --sage: #9BAA83;
+    --sage-deep: #C3D0AC;
+    --amber: #E0955A;
+    --amber-deep: #F0AB78;
+    --steel: #7FA3AE;
+    --steel-deep: #9DC0CA;
+    --line: #313A28;
+    --line-strong: #454F38;
+    --focus: #7FA3AE;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--porcelain);
+    color: var(--text);
+    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: 'Fraunces', ui-serif, Georgia, serif;
+    font-weight: 470;
+    color: var(--text);
+    text-wrap: balance;
+    margin: 0;
+  }
+  p{ margin:0; }
+  a{ color: inherit; }
+  .mono{
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    letter-spacing: 0.02em;
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--steel-deep);
+  }
+  .wrap{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  img, svg{ max-width: 100%; }
+  [hidden]{ display:none !important; }
+  :focus-visible{ outline: 2px solid var(--focus); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ================= HEADER ================= */
+  header{
+    position: sticky; top:0; z-index: 20;
+    background: color-mix(in srgb, var(--porcelain) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 0; gap: 20px;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:8px;
+    font-family:'Fraunces', serif; font-weight:560; font-size:1.15rem;
+    letter-spacing: 0.01em; white-space:nowrap; text-decoration:none;
+  }
+  .brand .dot{ color: var(--amber); }
+  .navlinks{ display:flex; gap:26px; align-items:center; }
+  .navlinks a{
+    font-size:0.9rem; text-decoration:none; color: var(--text-muted);
+    transition: color .15s ease;
+  }
+  .navlinks a:hover{ color: var(--text); }
+  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .btn{
+    font-family:'Manrope', sans-serif; font-weight:600; font-size:0.88rem;
+    padding: 11px 20px; border-radius: 3px; border:1px solid transparent;
+    cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{ background: var(--peat); color: var(--porcelain); }
+  .btn-primary:hover{ transform: translateY(-1px); }
+  .btn-ghost{ border-color: var(--line-strong); color: var(--text); background:transparent; }
+  .btn-ghost:hover{ border-color: var(--steel); }
+
+  /* ================= SECTION SHELL ================= */
+  section{ padding: 84px 0; border-top: 1px solid var(--line); }
+  .section-head{ max-width: 640px; margin-bottom: 44px; }
+  .section-head h2{ font-size: clamp(1.7rem, 3vw, 2.3rem); margin-top:14px; }
+  .section-head p{ margin-top:14px; color: var(--text-muted); font-size:1.02rem; line-height:1.6; }
+
+  /* ================= DASHBOARD HERO ================= */
+  .dash-hero{ padding: 64px 0 44px; border-top:none; }
+  .dash-hero h1{ font-size: clamp(2rem, 3.6vw, 2.8rem); margin-top:14px; }
+  .dash-hero .lede{
+    margin-top:16px; font-size:1.02rem; line-height:1.6; color: var(--text-muted); max-width:64ch;
+  }
+  .dash-hero .lede b{ color: var(--text); }
+
+  /* ================= DIAGNOSTIC READOUT (reused from quiz results) ================= */
+  .diag-readout{ display:flex; flex-direction:column; gap:16px; margin-top:8px; max-width:640px; }
+  .row-metric{ display:grid; grid-template-columns: 190px 1fr 42px; align-items:center; gap:14px; }
+  .row-metric .label{ font-size:0.86rem; color: var(--text-muted); }
+  .row-metric .bar{ height:6px; background: var(--surface-sunken); border-radius:3px; overflow:hidden; border:1px solid var(--line); }
+  .row-metric .fill{ display:block; height:100%; background: linear-gradient(90deg, var(--sage), var(--steel)); border-radius:3px; }
+  .row-metric .val{ font-size:0.82rem; text-align:right; color: var(--text); }
+  .insight-box{
+    margin-top: 20px; padding: 16px 18px; background: var(--surface-sunken); border-left:3px solid var(--amber);
+    border-radius:2px; font-size:0.88rem; color: var(--text-muted); line-height:1.55; max-width:640px;
+  }
+  .insight-box b{ color: var(--text); }
+
+  /* ================= FORMULA ================= */
+  .dash-grid{ display:grid; grid-template-columns: 1.15fr 0.85fr; gap:44px; align-items:start; }
+  .product-card{ border:1px solid var(--line); border-radius:6px; background: var(--surface); padding:28px 30px; box-shadow: var(--shadow); }
+  .product-card .rec-label{ font-size:0.72rem; color: var(--amber-deep); text-transform:uppercase; letter-spacing:0.1em; font-family:'IBM Plex Mono', monospace; }
+  .product-card h3{ font-size:1.5rem; margin-top:10px; }
+  .product-card .price{ font-size:0.86rem; color: var(--text-muted); margin-top:4px; font-family:'IBM Plex Mono', monospace; }
+  .product-card .tagline{ margin-top:14px; font-style:italic; color: var(--sage-deep); font-family:'Fraunces', serif; font-size:1.05rem; }
+  .product-card .why{ margin-top:16px; font-size:0.92rem; line-height:1.6; color: var(--text-muted); }
+  .product-card .ing-link{ margin-top:20px; display:inline-block; font-size:0.84rem; color: var(--steel-deep); text-decoration:none; border-bottom:1px dashed var(--steel-deep); }
+
+  /* ================= HISTORY ================= */
+  .history-list{ display:flex; flex-direction:column; }
+  .history-item{ padding:22px 0; border-top:1px dashed var(--line-strong); display:grid; grid-template-columns:130px 1fr; gap:22px; }
+  .history-item:first-child{ border-top:none; padding-top:0; }
+  .history-date{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color: var(--text-muted); }
+  .history-tag{
+    display:inline-block; font-size:0.62rem; font-weight:700; font-family:'IBM Plex Mono', monospace;
+    background: var(--sage-deep); color: var(--porcelain); padding:2px 8px; border-radius:10px;
+    letter-spacing:0.04em; margin-bottom:8px;
+  }
+  .history-formula{ font-family:'Fraunces', serif; font-size:1.05rem; margin-bottom:6px; }
+  .history-note{ font-size:0.9rem; color: var(--text-muted); line-height:1.55; }
+
+  /* ================= NEXT STEP (reused band style) ================= */
+  .closing-band{
+    background: var(--peat); color: var(--porcelain); border-radius:6px; padding: 48px 52px;
+    display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
+  }
+  .closing-band h2{ color: var(--porcelain); font-size: clamp(1.4rem,2.4vw,1.9rem); max-width:34ch; }
+  .closing-band p{ color: color-mix(in srgb, var(--porcelain) 72%, transparent); margin-top:12px; line-height:1.6; max-width:42ch; }
+  .closing-band .btn-primary{ background: var(--amber); color: var(--peat); flex-shrink:0; }
+  .closing-band .btn-primary:hover{ background: var(--amber-deep); }
+  .closing-band .btn-ghost{ border-color: color-mix(in srgb, var(--porcelain) 40%, transparent); color: var(--porcelain); }
+  .closing-band .cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+
+  footer{ padding: 40px 0 56px; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; padding-top:28px; border-top:1px solid var(--line); }
+  .foot-note{ font-size:0.78rem; color: var(--text-muted); max-width:52ch; line-height:1.5; }
+
+  @media (max-width: 880px){
+    .navlinks{ display:none; }
+    .dash-grid{ grid-template-columns: 1fr; }
+    .history-item{ grid-template-columns: 1fr; gap:6px; }
+    .closing-band{ flex-direction:column; align-items:flex-start; padding:36px 28px; }
+    .row-metric{ grid-template-columns: 140px 1fr 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/">MADARA<span class="dot">·</span>ORIGIN</a>
+    <nav class="navlinks">
+      <a href="/#method">Method</a>
+      <a href="/#ingredients">Ingredients</a>
+      <a href="/#products">Products</a>
+      <a href="/#proof">Proof</a>
+    </nav>
+    <div class="nav-right">
+      <a class="btn btn-ghost" href="/">← Back to site</a>
+    </div>
+  </div>
+</header>
+
+<section class="dash-hero wrap">
+  <div class="eyebrow">Demo profile · sample data for illustration</div>
+  <h1>Your skin dashboard</h1>
+  <p class="lede">
+    A living profile for <b>Sample user — E. Kalniņa</b>, diagnosed on <span class="mono">10 Jan 2026</span>.
+    This is what every Madara Origin customer sees after completing the diagnostic — updated automatically
+    each time the formula is reworked.
+  </p>
+</section>
+
+<section id="profile">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Skin profile</div>
+      <h2>Seven markers, one snapshot</h2>
+      <p>Combined from your quiz answers and your last saliva kit reading, taken 2 Jul 2026.</p>
+    </div>
+    <div class="diag-readout">
+      <div class="row-metric">
+        <span class="label">Hydration</span>
+        <span class="bar"><span class="fill" style="width:64%"></span></span>
+        <span class="val mono">64</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Barrier integrity</span>
+        <span class="bar"><span class="fill" style="width:58%"></span></span>
+        <span class="val mono">58</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Elasticity</span>
+        <span class="bar"><span class="fill" style="width:71%"></span></span>
+        <span class="val mono">71</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Tolerance</span>
+        <span class="bar"><span class="fill" style="width:82%"></span></span>
+        <span class="val mono">82</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Evenness</span>
+        <span class="bar"><span class="fill" style="width:67%"></span></span>
+        <span class="val mono">67</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Oxidative stress resistance</span>
+        <span class="bar"><span class="fill" style="width:49%"></span></span>
+        <span class="val mono">49</span>
+      </div>
+      <div class="row-metric">
+        <span class="label">Collagen resilience</span>
+        <span class="bar"><span class="fill" style="width:60%"></span></span>
+        <span class="val mono">60</span>
+      </div>
+    </div>
+    <div class="insight-box">
+      <b>Lowest marker:</b> oxidative stress resistance sits at 49/100 — this is why your current formula
+      leans on antioxidant-rich Sea buckthorn and Sphagnum moss.
+    </div>
+  </div>
+</section>
+
+<section id="formula">
+  <div class="wrap dash-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:24px;">
+        <div class="eyebrow">Current formula</div>
+        <h2 style="font-size:clamp(1.5rem,2.4vw,1.9rem);">Origin Hydra — Formula #0842</h2>
+        <p>One of 1,240 possible combinations, blended 2 Jul 2026 in Riga.</p>
+      </div>
+      <div class="diag-readout">
+        <div class="row-metric">
+          <span class="label">Sea buckthorn</span>
+          <span class="bar"><span class="fill" style="width:34%"></span></span>
+          <span class="val mono">34%</span>
+        </div>
+        <div class="row-metric">
+          <span class="label">Oat lipids</span>
+          <span class="bar"><span class="fill" style="width:28%"></span></span>
+          <span class="val mono">28%</span>
+        </div>
+        <div class="row-metric">
+          <span class="label">Sphagnum moss</span>
+          <span class="bar"><span class="fill" style="width:24%"></span></span>
+          <span class="val mono">24%</span>
+        </div>
+        <div class="row-metric">
+          <span class="label">Meadowsweet</span>
+          <span class="bar"><span class="fill" style="width:14%"></span></span>
+          <span class="val mono">14%</span>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="rec-label">Your active routine</div>
+      <h3>Origin Hydra</h3>
+      <div class="price mono">58 € · 60 ml · Serum-cream</div>
+      <div class="tagline">Deep hydration, rebuilt barrier.</div>
+      <p class="why">
+        Built for your hydration and barrier markers, with extra Sea buckthorn to support
+        oxidative stress resistance — your lowest score this quarter.
+      </p>
+      <a class="ing-link" href="/#ingredients">See matching ingredients ↓</a>
+    </div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Reformulation history</div>
+      <h2>Your digital twin, over time</h2>
+      <p>Reworked four times a year as your markers shift with the seasons — nothing here is static.</p>
+    </div>
+    <div class="history-list">
+      <div class="history-item">
+        <div class="history-date">2 Jul 2026<br><span class="mono" style="font-size:0.68rem; color:var(--sage-deep);">CURRENT</span></div>
+        <div>
+          <div class="history-tag">FORMULA #0842</div>
+          <div class="history-formula">Origin Hydra — v2</div>
+          <div class="history-note">Sea buckthorn increased from 27% to 34% after your saliva retake showed oxidative stress resistance drop to 49/100.</div>
+        </div>
+      </div>
+      <div class="history-item">
+        <div class="history-date">5 Apr 2026</div>
+        <div>
+          <div class="history-tag">FORMULA #0603</div>
+          <div class="history-formula">Origin Hydra — v1</div>
+          <div class="history-note">Switched base from Origin Shield as tolerance recovered (58 → 79) and hydration became your lowest marker.</div>
+        </div>
+      </div>
+      <div class="history-item">
+        <div class="history-date">10 Jan 2026</div>
+        <div>
+          <div class="history-tag">FORMULA #0211</div>
+          <div class="history-formula">Origin Shield — v1</div>
+          <div class="history-note">Your first formula, built from your initial diagnostic — focused on calming winter sensitivity.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="next" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="closing-band">
+      <div>
+        <h2>Next reformulation: 1 Oct 2026</h2>
+        <p><span id="daysAway">19 days</span> away. Retake the diagnostic anytime if your skin or lifestyle
+        has changed — your next formula will adjust automatically.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/#quiz">Retake the diagnostic</a>
+        <a class="btn btn-ghost" href="/#quiz">Update my profile</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="brand" style="font-size:1rem;">MADARA<span class="dot">·</span>ORIGIN</div>
+      <div class="foot-note">Sample dashboard built for a creative strategy exercise. All names, dates and figures shown here are fictional.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var target = new Date('2026-10-01T00:00:00');
+  var el = document.getElementById('daysAway');
+  if(!el) return;
+  var days = Math.ceil((target - new Date()) / 86400000);
+  el.textContent = days > 1 ? days + ' days' : (days === 1 ? '1 day' : 'Today');
+})();
+</script>
+
+</body>
+</html>
