@@ -906,6 +906,14 @@
     resultsBox.hidden = false;
     renderResults();
     resultsBox.scrollIntoView({behavior:'smooth', block:'start'});
+    try{
+      localStorage.setItem('madaraOriginResult', JSON.stringify({
+        scores: lastProfile.scores,
+        primary: lastProfile.primary,
+        productKey: AXIS_TO_PRODUCT[lastProfile.primary],
+        savedAt: Date.now()
+      }));
+    }catch(e){}
   }
 
   function renderResults(){
