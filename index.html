@@ -222,7 +222,7 @@
   .row-metric{ display:grid; grid-template-columns: 128px 1fr 40px; align-items:center; gap:14px; }
   .row-metric .label{ font-size:0.86rem; color: var(--text-muted); }
   .row-metric .bar{ height:6px; background: var(--surface-sunken); border-radius:3px; overflow:hidden; border:1px solid var(--line); }
-  .row-metric .fill{ height:100%; background: linear-gradient(90deg, var(--sage), var(--steel)); border-radius:3px; }
+  .row-metric .fill{ display:block; height:100%; background: linear-gradient(90deg, var(--sage), var(--steel)); border-radius:3px; }
   .row-metric .val{ font-size:0.82rem; text-align:right; color: var(--text); }
   .insight-box{
     margin-top: 20px; padding: 16px 18px; background: var(--surface-sunken); border-left:3px solid var(--amber);
@@ -442,6 +442,7 @@
         <div class="idx mono" data-i18n="step2_idx">02 — ANALYSIS</div>
         <h3 data-i18n="step2_h3">Saliva kit (optional)</h3>
         <p data-i18n="step2_p">An at-home sample decodes 7 markers linked to hydration, sensitivity and skin ageing.</p>
+        <p data-i18n="step2_reassure">Purely optional, and not a medical device — the swab takes under a minute at home, with no needles or lab visit required. Your seven markers come back decoded within 10 days.</p>
         <div class="tag mono" data-i18n="step2_tag">Results within 10 days</div>
       </div>
       <div class="step">
@@ -642,7 +643,7 @@
       method_eyebrow:"A three-step protocol", method_h2:"From data to formula",
       method_p:"Every routine starts with a precise reading of your skin, not a generic promise. The protocol is the same for everyone — the result never is.",
       step1_idx:"01 — INPUT", step1_h3:"Skin quiz", step1_p:"5 questions about your skin, your climate and your lifestyle. Five minutes, online — try it below.", step1_tag:"Duration: 5 min",
-      step2_idx:"02 — ANALYSIS", step2_h3:"Saliva kit (optional)", step2_p:"An at-home sample decodes 7 markers linked to hydration, sensitivity and skin ageing.", step2_tag:"Results within 10 days",
+      step2_idx:"02 — ANALYSIS", step2_h3:"Saliva kit (optional)", step2_p:"An at-home sample decodes 7 markers linked to hydration, sensitivity and skin ageing.", step2_reassure:"Purely optional, and not a medical device — the swab takes under a minute at home, with no needles or lab visit required. Your seven markers come back decoded within 10 days.", step2_tag:"Results within 10 days",
       step3_idx:"03 — FORMULATION", step3_h3:"A one-of-a-kind blend", step3_p:"A lab in Riga blends your routine from 1,240 possible combinations, reformulated every season.", step3_tag:"Reformulated: 4×/year",
       quiz_eyebrow:"Your diagnostic", quiz_h2:"Answer five questions, meet your formula",
       quiz_p:"This is a shortened version of the full skin quiz. Your answers stay on this page — nothing is sent anywhere.",
@@ -697,7 +698,7 @@
       method_eyebrow:"Trīs soļu process", method_h2:"No datiem līdz formulai",
       method_p:"Katra kopšanas līnija sākas ar precīzu tavas ādas novērtējumu, nevis vispārīgu solījumu. Process ir vienāds visiem — rezultāts nekad nav.",
       step1_idx:"01 — IEVADE", step1_h3:"Ādas tests", step1_p:"5 jautājumi par tavu ādu, klimatu un dzīvesveidu. Piecas minūtes tiešsaistē — izmēģini zemāk.", step1_tag:"Ilgums: 5 min",
-      step2_idx:"02 — ANALĪZE", step2_h3:"Siekalu tests (izvēles)", step2_p:"Paraugs mājās atšifrē 7 rādītājus, kas saistīti ar mitrumu, jutīgumu un ādas novecošanu.", step2_tag:"Rezultāti 10 dienu laikā",
+      step2_idx:"02 — ANALĪZE", step2_h3:"Siekalu tests (izvēles)", step2_p:"Paraugs mājās atšifrē 7 rādītājus, kas saistīti ar mitrumu, jutīgumu un ādas novecošanu.", step2_reassure:"Pilnībā neobligāts un nav medicīniska ierīce — uztriepe mājās aizņem mazāk par minūti, bez adatām vai vizītes laboratorijā. Tavi septiņi rādītāji atgriežas atšifrēti 10 dienu laikā.", step2_tag:"Rezultāti 10 dienu laikā",
       step3_idx:"03 — FORMULĒŠANA", step3_h3:"Unikāls maisījums", step3_p:"Laboratorija Rīgā sajauc tavu kopšanas līniju no 1240 iespējamām kombinācijām, pārformulējot katru sezonu.", step3_tag:"Pārformulēšana: 4×/gadā",
       quiz_eyebrow:"Tava diagnostika", quiz_h2:"Atbildi uz pieciem jautājumiem, iepazīsti savu formulu",
       quiz_p:"Šī ir saīsināta pilnā ādas testa versija. Tavas atbildes paliek šajā lapā — nekas netiek nosūtīts.",
