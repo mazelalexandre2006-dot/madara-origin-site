@@ -132,7 +132,8 @@
     transition: color .15s ease;
   }
   .navlinks a:hover{ color: var(--text); }
-  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .nav-right{ display:flex; align-items:center; gap:12px; }
+  .nav-right .btn{ white-space:nowrap; }
   .btn{
     font-family:'Manrope', sans-serif; font-weight:600; font-size:0.88rem;
     padding: 11px 20px; border-radius: 3px; border:1px solid transparent;
@@ -142,8 +143,14 @@
   .btn-primary{ background: var(--peat); color: var(--porcelain); }
   .btn-primary:hover{ transform: translateY(-1px); }
   .btn-ghost{ border-color: var(--line-strong); color: var(--text); background:transparent; }
+  .nav-right .btn-ghost{ padding:9px 14px; font-size:0.82rem; white-space:nowrap; }
   .btn-ghost:hover{ border-color: var(--steel); }
 
+  .cart-badge{
+    display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px;
+    border-radius:9px; background: var(--amber); color: var(--porcelain); font-size:0.68rem;
+    font-family:'IBM Plex Mono', monospace; line-height:1;
+  }
   .lang-toggle{ display:flex; gap:2px; padding:3px; border:1px solid var(--line-strong); border-radius:20px; flex-shrink:0; }
   .lang-toggle button{
     font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.05em;
@@ -285,7 +292,8 @@
   .product-tile-body h3{ font-size:1.05rem; }
   .product-tile-body .price{ font-size:0.78rem; color: var(--text-muted); }
   .product-tile-body .tagline{ font-size:0.86rem; font-style:italic; color: var(--sage-deep); font-family:'Fraunces', serif; }
-  .product-tile-body .view-details{ margin-top:auto; align-self:flex-start; }
+  .product-tile-actions{ margin-top:auto; align-self:stretch; display:flex; gap:8px; flex-wrap:wrap; }
+  .product-tile-actions .btn{ padding:9px 14px; font-size:0.82rem; }
 
   .product-card-img{ width:100%; aspect-ratio: 4/3; object-fit:cover; border-radius:4px; margin-bottom:18px; display:block; background: var(--surface-sunken); }
   .product-details-btn{ margin-top:14px; }
@@ -317,6 +325,40 @@
   .modal-body #modalReserve{ margin-top:20px; align-self:flex-start; }
   .modal-confirm{ margin-top:14px; font-size:0.86rem; color: var(--amber-deep); }
 
+  /* ================= CART / ACCOUNT ================= */
+  .cart-row{ display:flex; align-items:center; gap:14px; padding:16px 0; border-top:1px solid var(--line); }
+  .cart-row:first-child{ border-top:none; }
+  .cart-row-info{ flex:1; min-width:0; }
+  .cart-row-name{ font-family:'Fraunces', serif; font-size:1rem; }
+  .cart-row-price{ font-size:0.78rem; color: var(--text-muted); margin-top:3px; }
+  .cart-row-qty{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .qty-btn{
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--line-strong); background: var(--surface);
+    color: var(--text); cursor:pointer; font-size:1rem; line-height:1; display:flex; align-items:center; justify-content:center;
+  }
+  .qty-btn:hover{ border-color: var(--steel); }
+  .qty-val{ min-width:18px; text-align:center; font-size:0.9rem; }
+  .cart-row-total{ font-size:0.9rem; min-width:56px; text-align:right; flex-shrink:0; }
+  .cart-row-remove{
+    background:none; border:none; color: var(--text-muted); cursor:pointer; font-size:1.1rem; line-height:1;
+    padding:4px; flex-shrink:0;
+  }
+  .cart-row-remove:hover{ color: var(--amber-deep); }
+  .cart-subtotal-row{
+    display:flex; justify-content:space-between; align-items:baseline; padding-top:18px; margin-top:4px;
+    border-top:1px solid var(--line-strong); font-size:1.02rem;
+  }
+  .cart-subtotal-row b{ font-family:'IBM Plex Mono', monospace; }
+  .form-label{ font-size:0.8rem; color: var(--text-muted); display:block; margin:16px 0 6px; }
+  .form-input{
+    width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:4px;
+    background: var(--surface); color: var(--text); font-family:'Manrope', sans-serif; font-size:0.92rem;
+    box-sizing:border-box; resize:vertical;
+  }
+  .order-row{ display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-top:1px dashed var(--line-strong); font-size:0.88rem; }
+  .order-row:first-child{ border-top:none; }
+  .order-row .order-id{ color: var(--text-muted); font-family:'IBM Plex Mono', monospace; font-size:0.78rem; }
+
   @media (max-width: 880px){
     .products-grid{ grid-template-columns: repeat(2,1fr); }
     .modal-meta > div{ flex-direction:column; gap:2px; }
@@ -346,6 +388,10 @@
       <a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a>
     </nav>
     <div class="nav-right">
+      <button type="button" class="btn btn-ghost" id="accountNavBtn" data-i18n="nav_account">Account</button>
+      <button type="button" class="btn btn-ghost" id="cartNavBtn">
+        <span data-i18n="nav_cart">Cart</span><span class="cart-badge" id="cartBadge" hidden>0</span>
+      </button>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button type="button" class="langbtn" data-lang="en">EN</button>
         <button type="button" class="langbtn" data-lang="lv">LV</button>
@@ -493,7 +539,10 @@
           <div class="tagline" id="productTagline"></div>
           <p class="why" id="productWhy"></p>
           <a class="ing-link" href="#ingredients" data-i18n="view_ingredients_link">See matching ingredients ↓</a>
-          <button type="button" class="btn btn-ghost product-details-btn" id="productDetailsBtn" data-i18n="products_cta">View details</button>
+          <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-ghost product-details-btn" id="productDetailsBtn" data-i18n="products_cta">View details</button>
+            <button type="button" class="btn btn-primary" id="resultsAddToCart" data-i18n="add_to_cart_btn">Add to cart</button>
+          </div>
         </div>
         <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
           <button type="button" class="btn btn-ghost retake" id="retakeBtn" data-i18n="btn_retake" style="margin-top:0;">Retake the quiz</button>
@@ -622,9 +671,26 @@
         <div><span class="meta-label" data-i18n="modal_actives_label">Key actives</span><span id="modalActives"></span></div>
         <div><span class="meta-label" data-i18n="modal_use_label">How to use</span><span id="modalHow"></span></div>
       </div>
-      <button type="button" class="btn btn-primary" id="modalReserve" data-i18n="modal_reserve_btn">Reserve this formula</button>
+      <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+        <button type="button" class="btn btn-primary" id="modalAddToCart" data-i18n="add_to_cart_btn" style="margin-top:0;">Add to cart</button>
+        <button type="button" class="btn btn-ghost" id="modalReserve" data-i18n="modal_reserve_btn" style="margin-top:0;">Reserve this formula</button>
+      </div>
       <div class="modal-confirm" id="modalConfirm" data-i18n="modal_reserved_confirm" hidden></div>
     </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cartOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cartTitle" style="max-width:540px;">
+    <button type="button" class="modal-close" id="cartClose" aria-label="Close">&times;</button>
+    <div class="modal-body" id="cartBody" style="padding:32px 30px;"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="accountOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle" style="max-width:480px;">
+    <button type="button" class="modal-close" id="accountClose" aria-label="Close">&times;</button>
+    <div class="modal-body" id="accountBody" style="padding:32px 30px;"></div>
   </div>
 </div>
 
@@ -686,6 +752,12 @@
       closing_h2:"Your skin already has the answer. We just help formulate it.",
       closing_p:"Scroll up and take the 5-minute diagnostic — your personalized formula lives on this page, not in your inbox.",
       closing_cta:"Start your diagnostic",
+      nav_cart:"Cart", nav_account:"Account",
+      add_to_cart_btn:"Add to cart", added_to_cart_btn:"Added ✓",
+      cart_title:"Your cart", cart_empty:"Your cart is empty.", cart_browse:"Browse the range ↓", cart_subtotal:"Subtotal", cart_checkout_btn:"Proceed to checkout", cart_continue_btn:"Continue shopping", cart_remove:"Remove",
+      checkout_title:"Checkout", checkout_name_label:"Full name", checkout_address_label:"Delivery address", checkout_name_placeholder:"Your name", checkout_address_placeholder:"Street, city, postal code", checkout_confirm_btn:"Confirm order", checkout_back_btn:"Back to cart",
+      order_confirmed_title:"Order confirmed", order_confirmed_note:"This is a demo checkout for a university project — no real payment was made and nothing will be shipped.", order_number_label:"Order", order_close_btn:"Close", order_view_account_btn:"View my account",
+      account_title:"Account", account_name_label:"Your name", account_name_placeholder:"Your first name", account_save_btn:"Save", account_greeting:"Hi, {name}", account_orders_title:"My orders", account_no_orders:"No orders yet — they'll show up here after checkout.", account_signout_btn:"Sign out", account_edit_btn:"Edit name",
       footer_note:"Brand concept created for a creative strategy exercise (Elcoin.ai methodology). Your skin. Decoded by nature."
     },
     lv: {
@@ -741,6 +813,12 @@
       closing_h2:"Tavai ādai jau ir atbilde. Mēs tikai palīdzam to formulēt.",
       closing_p:"Ritini uz augšu un izpildi 5 minūšu diagnostiku — tava personalizētā formula ir šajā lapā, nevis tavā e-pastā.",
       closing_cta:"Sāc savu diagnostiku",
+      nav_cart:"Grozs", nav_account:"Konts",
+      add_to_cart_btn:"Pievienot grozam", added_to_cart_btn:"Pievienots ✓",
+      cart_title:"Tavs grozs", cart_empty:"Tavs grozs ir tukšs.", cart_browse:"Apskati klāstu ↓", cart_subtotal:"Starpsumma", cart_checkout_btn:"Pāriet uz apmaksu", cart_continue_btn:"Turpināt iepirkties", cart_remove:"Noņemt",
+      checkout_title:"Noformēt pasūtījumu", checkout_name_label:"Pilns vārds", checkout_address_label:"Piegādes adrese", checkout_name_placeholder:"Tavs vārds", checkout_address_placeholder:"Iela, pilsēta, pasta indekss", checkout_confirm_btn:"Apstiprināt pasūtījumu", checkout_back_btn:"Atpakaļ uz grozu",
+      order_confirmed_title:"Pasūtījums apstiprināts", order_confirmed_note:"Šis ir demo apmaksas process universitātes projektam — reāls maksājums netika veikts un nekas netiks nosūtīts.", order_number_label:"Pasūtījums", order_close_btn:"Aizvērt", order_view_account_btn:"Skatīt manu kontu",
+      account_title:"Konts", account_name_label:"Tavs vārds", account_name_placeholder:"Tavs vārds", account_save_btn:"Saglabāt", account_greeting:"Sveiks, {name}", account_orders_title:"Mani pasūtījumi", account_no_orders:"Vēl nav pasūtījumu — tie parādīsies šeit pēc apmaksas.", account_signout_btn:"Izrakstīties", account_edit_btn:"Rediģēt vārdu",
       footer_note:"Zīmola koncepts izveidots radošās stratēģijas vingrinājumam (Elcoin.ai metodoloģija). Tava āda. Dabas atšifrēta."
     }
   };
@@ -844,11 +922,237 @@
   var modalHow = document.getElementById('modalHow');
   var modalReserve = document.getElementById('modalReserve');
   var modalConfirm = document.getElementById('modalConfirm');
+  var modalAddToCart = document.getElementById('modalAddToCart');
+  var resultsAddToCart = document.getElementById('resultsAddToCart');
+  var cartOverlay = document.getElementById('cartOverlay');
+  var cartClose = document.getElementById('cartClose');
+  var cartBody = document.getElementById('cartBody');
+  var cartNavBtn = document.getElementById('cartNavBtn');
+  var cartBadge = document.getElementById('cartBadge');
+  var accountOverlay = document.getElementById('accountOverlay');
+  var accountClose = document.getElementById('accountClose');
+  var accountBody = document.getElementById('accountBody');
+  var accountNavBtn = document.getElementById('accountNavBtn');
 
   function t(key){ return (I18N[lang] && I18N[lang][key] !== undefined) ? I18N[lang][key] : key; }
 
   function fillTemplate(str, vals){
     return str.replace(/\{(\w+)\}/g, function(m, k){ return (vals[k] !== undefined) ? vals[k] : m; });
+  }
+
+  /* ================= CART / ACCOUNT (demo only — client-side, no real payment) ================= */
+  var PRICE_VALUES = {hydra:58, shield:62, renew:68, clarity:64};
+  var MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var cartView = 'cart';
+  var lastOrder = null;
+
+  function loadCart(){
+    try{ var c = JSON.parse(localStorage.getItem('madaraOriginCart')); return Array.isArray(c) ? c : []; }catch(e){ return []; }
+  }
+  function saveCart(cart){
+    try{ localStorage.setItem('madaraOriginCart', JSON.stringify(cart)); }catch(e){}
+    updateCartBadge();
+  }
+  function cartCount(cart){ return cart.reduce(function(sum, it){ return sum + it.qty; }, 0); }
+  function updateCartBadge(){
+    var n = cartCount(loadCart());
+    cartBadge.textContent = n;
+    cartBadge.hidden = n === 0;
+  }
+  function addToCart(key, qty){
+    var cart = loadCart();
+    var existing = cart.filter(function(it){ return it.key === key; })[0];
+    if(existing){ existing.qty += qty; } else { cart.push({key:key, qty:qty}); }
+    saveCart(cart);
+  }
+  function flashAdded(btn){
+    var original = btn.textContent;
+    btn.textContent = t('added_to_cart_btn');
+    btn.disabled = true;
+    setTimeout(function(){ btn.textContent = original; btn.disabled = false; }, 1200);
+  }
+
+  function openCart(){ cartView = 'cart'; renderCartBody(); cartOverlay.hidden = false; document.body.style.overflow = 'hidden'; }
+  function closeCart(){ cartOverlay.hidden = true; document.body.style.overflow = ''; }
+  function openAccount(){ renderAccountBody(); accountOverlay.hidden = false; document.body.style.overflow = 'hidden'; }
+  function closeAccount(){ accountOverlay.hidden = true; document.body.style.overflow = ''; }
+
+  function renderCartBody(){
+    if(cartView === 'confirmation' && lastOrder){ renderOrderConfirmation(); return; }
+    if(cartView === 'checkout'){ renderCheckoutBody(); return; }
+    var cart = loadCart();
+    var html = '<h3 style="font-size:1.4rem;">'+t('cart_title')+'</h3>';
+    if(cart.length === 0){
+      html += '<p style="margin-top:16px; color:var(--text-muted); font-size:0.92rem;">'+t('cart_empty')+'</p>';
+      html += '<a href="#products" class="btn btn-ghost" style="margin-top:20px;" id="cartBrowseLink">'+t('cart_browse')+'</a>';
+      cartBody.innerHTML = html;
+      var browseLink = document.getElementById('cartBrowseLink');
+      if(browseLink) browseLink.addEventListener('click', closeCart);
+      return;
+    }
+    var total = 0;
+    html += '<div>';
+    cart.forEach(function(item){
+      var p = PRODUCTS[item.key][lang];
+      var unit = PRICE_VALUES[item.key];
+      var lineTotal = unit * item.qty;
+      total += lineTotal;
+      html += '<div class="cart-row">'+
+        '<div class="cart-row-info"><div class="cart-row-name">'+p.name+'</div><div class="cart-row-price mono">'+p.price+'</div></div>'+
+        '<div class="cart-row-qty">'+
+          '<button type="button" class="qty-btn" data-action="dec" data-key="'+item.key+'">−</button>'+
+          '<span class="qty-val mono">'+item.qty+'</span>'+
+          '<button type="button" class="qty-btn" data-action="inc" data-key="'+item.key+'">+</button>'+
+        '</div>'+
+        '<div class="cart-row-total mono">€'+lineTotal+'</div>'+
+        '<button type="button" class="cart-row-remove" data-action="remove" data-key="'+item.key+'" aria-label="'+t('cart_remove')+'">&times;</button>'+
+      '</div>';
+    });
+    html += '</div>';
+    html += '<div class="cart-subtotal-row"><span>'+t('cart_subtotal')+'</span><b>€'+total+'</b></div>';
+    html += '<div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;">'+
+      '<button type="button" class="btn btn-primary" id="cartCheckoutBtn">'+t('cart_checkout_btn')+'</button>'+
+      '<button type="button" class="btn btn-ghost" id="cartContinueBtn">'+t('cart_continue_btn')+'</button>'+
+    '</div>';
+    cartBody.innerHTML = html;
+
+    Array.prototype.forEach.call(cartBody.querySelectorAll('.qty-btn'), function(b){
+      b.addEventListener('click', function(){
+        var k = b.getAttribute('data-key');
+        var action = b.getAttribute('data-action');
+        var c = loadCart();
+        var it = c.filter(function(x){ return x.key === k; })[0];
+        if(!it) return;
+        if(action === 'inc'){ it.qty += 1; }
+        else { it.qty -= 1; if(it.qty <= 0){ c = c.filter(function(x){ return x.key !== k; }); } }
+        saveCart(c);
+        renderCartBody();
+      });
+    });
+    Array.prototype.forEach.call(cartBody.querySelectorAll('[data-action="remove"]'), function(b){
+      b.addEventListener('click', function(){
+        saveCart(loadCart().filter(function(x){ return x.key !== b.getAttribute('data-key'); }));
+        renderCartBody();
+      });
+    });
+    var checkoutBtn = document.getElementById('cartCheckoutBtn');
+    if(checkoutBtn) checkoutBtn.addEventListener('click', function(){ cartView = 'checkout'; renderCartBody(); });
+    var continueBtn = document.getElementById('cartContinueBtn');
+    if(continueBtn) continueBtn.addEventListener('click', closeCart);
+  }
+
+  function renderCheckoutBody(){
+    var cart = loadCart();
+    var total = cart.reduce(function(sum, it){ return sum + PRICE_VALUES[it.key] * it.qty; }, 0);
+    var account = loadAccount();
+    var html = '<h3 style="font-size:1.4rem;">'+t('checkout_title')+'</h3><div style="margin-top:10px;">';
+    cart.forEach(function(item){
+      var p = PRODUCTS[item.key][lang];
+      html += '<div class="order-row"><span>'+p.name+' × '+item.qty+'</span><span class="mono">€'+(PRICE_VALUES[item.key]*item.qty)+'</span></div>';
+    });
+    html += '</div>';
+    html += '<div class="cart-subtotal-row"><span>'+t('cart_subtotal')+'</span><b>€'+total+'</b></div>';
+    html += '<label class="form-label" for="checkoutName">'+t('checkout_name_label')+'</label>'+
+      '<input type="text" class="form-input" id="checkoutName" placeholder="'+t('checkout_name_placeholder')+'" value="'+((account && account.name) ? account.name : '')+'">';
+    html += '<label class="form-label" for="checkoutAddress">'+t('checkout_address_label')+'</label>'+
+      '<textarea class="form-input" id="checkoutAddress" rows="3" placeholder="'+t('checkout_address_placeholder')+'"></textarea>';
+    html += '<div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;">'+
+      '<button type="button" class="btn btn-primary" id="checkoutConfirmBtn">'+t('checkout_confirm_btn')+'</button>'+
+      '<button type="button" class="btn btn-ghost" id="checkoutBackBtn">'+t('checkout_back_btn')+'</button>'+
+    '</div>';
+    cartBody.innerHTML = html;
+
+    document.getElementById('checkoutBackBtn').addEventListener('click', function(){ cartView = 'cart'; renderCartBody(); });
+    document.getElementById('checkoutConfirmBtn').addEventListener('click', function(){
+      var nameEl = document.getElementById('checkoutName');
+      var addrEl = document.getElementById('checkoutAddress');
+      var name = nameEl.value.trim();
+      if(!name){ nameEl.focus(); nameEl.style.borderColor = 'var(--amber-deep)'; return; }
+      var order = {
+        id: 'MO-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+        date: Date.now(),
+        items: cart.map(function(it){ var p = PRODUCTS[it.key][lang]; return {key:it.key, name:p.name, qty:it.qty, unit:PRICE_VALUES[it.key]}; }),
+        total: total,
+        name: name,
+        address: addrEl.value.trim()
+      };
+      var orders = loadOrders();
+      orders.unshift(order);
+      saveOrders(orders);
+      if(!account || !account.name){ saveAccount({name:name}); }
+      saveCart([]);
+      lastOrder = order;
+      cartView = 'confirmation';
+      renderCartBody();
+    });
+  }
+
+  function renderOrderConfirmation(){
+    var html = '<h3 style="font-size:1.4rem;">'+t('order_confirmed_title')+'</h3>';
+    html += '<p style="margin-top:14px; font-size:0.92rem; color:var(--text-muted); line-height:1.6;">'+t('order_confirmed_note')+'</p>';
+    html += '<div class="insight-box" style="margin-top:18px;"><b>'+t('order_number_label')+':</b> '+lastOrder.id+' · €'+lastOrder.total+'</div>';
+    html += '<div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;">'+
+      '<button type="button" class="btn btn-ghost" id="orderCloseBtn">'+t('order_close_btn')+'</button>'+
+      '<button type="button" class="btn btn-primary" id="orderViewAccountBtn">'+t('order_view_account_btn')+'</button>'+
+    '</div>';
+    cartBody.innerHTML = html;
+    document.getElementById('orderCloseBtn').addEventListener('click', closeCart);
+    document.getElementById('orderViewAccountBtn').addEventListener('click', function(){ closeCart(); openAccount(); });
+  }
+
+  function loadAccount(){
+    try{ return JSON.parse(localStorage.getItem('madaraOriginAccount')); }catch(e){ return null; }
+  }
+  function saveAccount(acc){
+    try{ localStorage.setItem('madaraOriginAccount', JSON.stringify(acc)); }catch(e){}
+  }
+  function loadOrders(){
+    try{ var o = JSON.parse(localStorage.getItem('madaraOriginOrders')); return Array.isArray(o) ? o : []; }catch(e){ return []; }
+  }
+  function saveOrders(orders){
+    try{ localStorage.setItem('madaraOriginOrders', JSON.stringify(orders)); }catch(e){}
+  }
+
+  function renderAccountBody(){
+    var account = loadAccount();
+    var html = '<h3 style="font-size:1.4rem;">'+t('account_title')+'</h3>';
+    if(!account || !account.name){
+      html += '<label class="form-label" for="accountNameInput">'+t('account_name_label')+'</label>'+
+        '<input type="text" class="form-input" id="accountNameInput" placeholder="'+t('account_name_placeholder')+'">';
+      html += '<button type="button" class="btn btn-primary" id="accountSaveBtn" style="margin-top:20px;">'+t('account_save_btn')+'</button>';
+      accountBody.innerHTML = html;
+      document.getElementById('accountSaveBtn').addEventListener('click', function(){
+        var nameEl = document.getElementById('accountNameInput');
+        var name = nameEl.value.trim();
+        if(!name){ nameEl.focus(); nameEl.style.borderColor = 'var(--amber-deep)'; return; }
+        saveAccount({name:name});
+        renderAccountBody();
+      });
+      return;
+    }
+    html += '<p style="margin-top:10px; font-size:0.98rem;">'+fillTemplate(t('account_greeting'), {name: account.name})+'</p>';
+    var orders = loadOrders();
+    html += '<div class="eyebrow" style="margin-top:26px;">'+t('account_orders_title')+'</div>';
+    if(orders.length === 0){
+      html += '<p style="margin-top:10px; font-size:0.88rem; color:var(--text-muted);">'+t('account_no_orders')+'</p>';
+    } else {
+      html += '<div style="margin-top:8px;">';
+      orders.forEach(function(o){
+        var d = new Date(o.date);
+        html += '<div class="order-row"><span><span class="order-id">#'+o.id+'</span><br>'+d.getDate()+' '+MONTHS_SHORT[d.getMonth()]+' '+d.getFullYear()+' · '+o.items.length+' item(s)</span><span class="mono">€'+o.total+'</span></div>';
+      });
+      html += '</div>';
+    }
+    html += '<div style="display:flex; gap:10px; margin-top:24px; flex-wrap:wrap;">'+
+      '<button type="button" class="btn btn-ghost" id="accountEditBtn">'+t('account_edit_btn')+'</button>'+
+      '<button type="button" class="btn btn-ghost" id="accountSignoutBtn">'+t('account_signout_btn')+'</button>'+
+    '</div>';
+    accountBody.innerHTML = html;
+    document.getElementById('accountEditBtn').addEventListener('click', function(){ saveAccount(null); renderAccountBody(); });
+    document.getElementById('accountSignoutBtn').addEventListener('click', function(){
+      try{ localStorage.removeItem('madaraOriginAccount'); }catch(e){}
+      renderAccountBody();
+    });
   }
 
   function computeProfile(ans){
@@ -968,10 +1272,16 @@
       var h3 = document.createElement('h3'); h3.textContent = p.name;
       var price = document.createElement('div'); price.className = 'price mono'; price.textContent = p.price;
       var tagline = document.createElement('div'); tagline.className = 'tagline'; tagline.textContent = p.tagline;
+      var actions = document.createElement('div');
+      actions.className = 'product-tile-actions';
       var btn = document.createElement('button');
       btn.type = 'button'; btn.className = 'btn btn-ghost view-details'; btn.textContent = t('products_cta');
       btn.addEventListener('click', function(){ openProductModal(key); });
-      body.appendChild(h3); body.appendChild(price); body.appendChild(tagline); body.appendChild(btn);
+      var addBtn = document.createElement('button');
+      addBtn.type = 'button'; addBtn.className = 'btn btn-primary'; addBtn.textContent = t('add_to_cart_btn');
+      addBtn.addEventListener('click', function(){ addToCart(key, 1); flashAdded(addBtn); });
+      actions.appendChild(btn); actions.appendChild(addBtn);
+      body.appendChild(h3); body.appendChild(price); body.appendChild(tagline); body.appendChild(actions);
       tile.appendChild(img); tile.appendChild(body);
       productsGrid.appendChild(tile);
     });
@@ -1003,14 +1313,33 @@
 
   modalClose.addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', function(e){ if(e.target === modalOverlay) closeModal(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modalOverlay.hidden) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape') return;
+    if(!modalOverlay.hidden) closeModal();
+    if(!cartOverlay.hidden) closeCart();
+    if(!accountOverlay.hidden) closeAccount();
+  });
   modalReserve.addEventListener('click', function(){
     modalReserve.hidden = true;
     modalConfirm.hidden = false;
   });
+  modalAddToCart.addEventListener('click', function(){
+    if(currentModalKey){ addToCart(currentModalKey, 1); flashAdded(modalAddToCart); }
+  });
   productDetailsBtn.addEventListener('click', function(){
     if(currentRecommendedKey) openProductModal(currentRecommendedKey);
   });
+  resultsAddToCart.addEventListener('click', function(){
+    if(currentRecommendedKey){ addToCart(currentRecommendedKey, 1); flashAdded(resultsAddToCart); }
+  });
+
+  cartNavBtn.addEventListener('click', openCart);
+  cartClose.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', function(e){ if(e.target === cartOverlay) closeCart(); });
+  accountNavBtn.addEventListener('click', openAccount);
+  accountClose.addEventListener('click', closeAccount);
+  accountOverlay.addEventListener('click', function(e){ if(e.target === accountOverlay) closeAccount(); });
+  updateCartBadge();
 
   retakeBtn.addEventListener('click', function(){
     step = 0; answers = [null,null,null,null,null]; lastProfile = null;
@@ -1116,6 +1445,8 @@
     if(lastProfile) renderResults();
     renderProductsGrid();
     if(!modalOverlay.hidden && currentModalKey) openProductModal(currentModalKey);
+    if(!cartOverlay.hidden) renderCartBody();
+    if(!accountOverlay.hidden) renderAccountBody();
   }
 
   document.querySelectorAll('.langbtn').forEach(function(btn){
