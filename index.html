@@ -132,7 +132,8 @@
     transition: color .15s ease;
   }
   .navlinks a:hover{ color: var(--text); }
-  .nav-right{ display:flex; align-items:center; gap:12px; }
+  .nav-right{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+  .nav{ flex-wrap:wrap; row-gap:10px; }
   .nav-right .btn{ white-space:nowrap; }
   .btn{
     font-family:'Manrope', sans-serif; font-weight:600; font-size:0.88rem;
@@ -370,6 +371,11 @@
     .results-grid{ grid-template-columns:1fr; }
     .proof{ grid-template-columns: repeat(2,1fr); }
     .closing-band{ flex-direction:column; align-items:flex-start; padding:36px 28px; }
+    .navlinks{ display:none; }
+  }
+
+  /* Nav grew two buttons (Cart/Account) — hide the middle links earlier so nav-right never wraps/overflows. */
+  @media (max-width: 1180px){
     .navlinks{ display:none; }
   }
 </style>
