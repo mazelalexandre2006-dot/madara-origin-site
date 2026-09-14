@@ -237,6 +237,7 @@
     border-radius:2px; font-size:0.88rem; color: var(--text-muted); line-height:1.55;
   }
   .insight-box b{ color: var(--text); }
+  .score-note{ margin-top:12px; font-size:0.78rem; color: var(--text-muted); line-height:1.5; }
 
   .product-card{ border:1px solid var(--line); border-radius:6px; background: var(--surface); padding:28px 30px; box-shadow: var(--shadow); }
   .product-card .rec-label{ font-size:0.72rem; color: var(--amber-deep); text-transform:uppercase; letter-spacing:0.1em; font-family:'IBM Plex Mono', monospace; }
@@ -535,6 +536,7 @@
         <svg id="radar" viewBox="0 0 360 360" width="100%" height="100%" role="img" aria-label="Radar chart of your skin profile" style="margin-top:16px;"></svg>
         <div class="diag-readout" id="barsContainer"></div>
         <div class="insight-box" id="insightBox"></div>
+        <p class="score-note" data-i18n="score_note">Scores above are estimated from your quiz answers, not a lab measurement — the optional saliva kit sharpens them.</p>
       </div>
       <div>
         <div class="product-card">
@@ -638,7 +640,9 @@
         <div class="lbl" data-i18n="proof4_label">seasonal reformulation of every routine</div>
       </div>
     </div>
-    <p style="margin-top:28px; font-size:0.76rem; color:var(--text-muted);" data-i18n="proof_footnote">*Internal study, panel of 210 users, self-assessment at 6 weeks.</p>
+    <div class="insight-box" style="max-width:640px; margin-top:28px;">
+      <b data-i18n="proof_honesty_lead">What "proof" means here:</b> <span data-i18n="proof_footnote">*Internal study, panel of 210 users, self-assessment at 6 weeks.</span> <span data-i18n="proof_honesty_note">No control group. We treat this as a first signal, not a clinical claim — independent, measured testing is next.</span>
+    </div>
   </div>
 </section>
 
@@ -738,6 +742,7 @@
       results_eyebrow:"Your result", results_h2:"Your formula, decoded",
       insight_prefix:"Decoded insight:",
       insight_template:"Your {axis} score is {val}/100 — this is the main driver behind the formula recommended below.",
+      score_note:"Scores above are estimated from your quiz answers, not a lab measurement — the optional saliva kit sharpens them.",
       recommended_label:"Recommended for you", used_in_badge:"In your formula", view_ingredients_link:"See matching ingredients ↓",
       nav_products:"Products", products_eyebrow:"The range", products_h2:"Four formulas, one origin",
       products_p:"Browse the full range, or let the diagnostic above choose for you.", products_cta:"View details",
@@ -755,6 +760,8 @@
       proof3_num:"150 km", proof3_label:"maximum harvest radius around Riga",
       proof4_num:"4×/year", proof4_label:"seasonal reformulation of every routine",
       proof_footnote:"*Internal study, panel of 210 users, self-assessment at 6 weeks.",
+      proof_honesty_lead:"What \"proof\" means here:",
+      proof_honesty_note:"No control group. We treat this as a first signal, not a clinical claim — independent, measured testing is next.",
       closing_h2:"Your skin already has the answer. We just help formulate it.",
       closing_p:"Scroll up and take the 5-minute diagnostic — your personalized formula lives on this page, not in your inbox.",
       closing_cta:"Start your diagnostic",
@@ -799,6 +806,7 @@
       results_eyebrow:"Tavs rezultāts", results_h2:"Tava formula, atšifrēta",
       insight_prefix:"Atšifrēta atziņa:",
       insight_template:"Tavs {axis} rādītājs ir {val}/100 — tas ir galvenais iemesls zemāk ieteiktajai formulai.",
+      score_note:"Iepriekš redzamie rādītāji ir aplēsti no tavām testa atbildēm, nevis laboratorijas mērījuma — izvēles siekalu tests tos precizē.",
       recommended_label:"Ieteikts tev", used_in_badge:"Tavā formulā", view_ingredients_link:"Skatīt atbilstošās sastāvdaļas ↓",
       nav_products:"Produkti", products_eyebrow:"Klāsts", products_h2:"Četras formulas, viena izcelsme",
       products_p:"Apskati visu klāstu, vai ļauj augstāk redzamajai diagnostikai izvēlēties tavu formulu.", products_cta:"Skatīt detalizēti",
@@ -816,6 +824,8 @@
       proof3_num:"150 km", proof3_label:"maksimālais novākšanas rādiuss ap Rīgu",
       proof4_num:"4×/gadā", proof4_label:"katras kopšanas līnijas sezonāla pārformulēšana",
       proof_footnote:"*Iekšējs pētījums, 210 lietotāju grupa, pašnovērtējums pēc 6 nedēļām.",
+      proof_honesty_lead:"Ko šeit nozīmē \"pierādījums\":",
+      proof_honesty_note:"Bez kontroles grupas. To uzskatām par pirmo signālu, nevis klīnisku apgalvojumu — neatkarīga, mērīta testēšana ir nākamais solis.",
       closing_h2:"Tavai ādai jau ir atbilde. Mēs tikai palīdzam to formulēt.",
       closing_p:"Ritini uz augšu un izpildi 5 minūšu diagnostiku — tava personalizētā formula ir šajā lapā, nevis tavā e-pastā.",
       closing_cta:"Sāc savu diagnostiku",
